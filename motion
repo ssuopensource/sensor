@@ -1,0 +1,25 @@
+import RPi.GPIO as GPIO
+import time
+
+#사용하는 GPIO 핀의 값으로 변경하여 사용
+GPIOIN = 1
+GPIOOUT = 2
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(GPIOIN, GPIO.IN)
+GPIO.setup(GPIOOUT, GPIO.OUT)
+
+while True:
+    state = GPIO.input(GPIOIN) #움직임이 감지되었는지 여부를 받아
+    
+    if (state == True):
+        print("Motion detected")
+    else:
+        print("Motion not detected") #움직임 여부를 출력
+    
+    GPIO.output(GPIOOUT, state)
+    time.sleep(0.5)
+    
+GPIO.cleanup()
+print("Motion detection ended")
