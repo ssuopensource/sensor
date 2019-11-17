@@ -1,5 +1,16 @@
 import RPi.GPIO as GPIO
+import picamera
 import time
+import datetime
+
+#define record():
+    camera = picamera.Picamera()
+    camera.resolution = (1280, 720)
+    now = datetime.datetime.now()
+    filename = now.strftime('%Y-%m-%d %H:%M:%S')
+    camera.start_recording(output = filename + '.h264')
+    camera.wait_recording(10)
+    camera.stop_recording()
 
 #사용하는 GPIO 핀의 값으로 변경하여 사용
 GPIOIN = 1
@@ -15,6 +26,7 @@ while True:
     
     if (state == True):
         print("Motion detected")
+        record()
     else:
         print("Motion not detected") #움직임 여부를 출력
     
