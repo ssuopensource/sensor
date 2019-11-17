@@ -3,7 +3,7 @@ import picamera
 import time
 import datetime
 
-#define record():
+#define record(): #10초간 녹화해서 "날짜 시간.h264"로 저장하는 함수
     camera = picamera.Picamera()
     camera.resolution = (1280, 720)
     now = datetime.datetime.now()
@@ -24,11 +24,11 @@ GPIO.setup(GPIOOUT, GPIO.OUT)
 while True:
     state = GPIO.input(GPIOIN) #움직임이 감지되었는지 여부를 받아
     
-    if (state == True):
+    if (state == True): #움직임이 감지되면 녹화
         print("Motion detected")
         record()
     else:
-        print("Motion not detected") #움직임 여부를 출력
+        print("Motion not detected")
     
     GPIO.output(GPIOOUT, state)
     time.sleep(0.5)
