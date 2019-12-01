@@ -1,0 +1,36 @@
+import RPi.GPIO as GPIO
+import picamera
+import time
+import datetime
+
+def record(): #10초간 녹화해서 "날짜 시간.h264"로 저장하는 함수
+    camera = picamera.Picamera()
+    camera.resolution = (1280, 720)
+    now = datetime.datetime.now()
+    filename = now.strftime('%Y-%m-%d %H:%M:%S')
+    camera.start_recording(output = filename + '.h264')
+    camera.wait_recording(10)
+    camera.stop_recording()
+
+def sense():
+	GPIOIN = 1
+	GPIOOUT = 2
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(GPIOIN, GPIO.IN)
+	GPIO.setup(GPIOOUT, GPIO.OUT)
+	
+	while True:
+    	state = GPIO.input(GPIOIN) #움직임이 감지되었는지 여부를 받아
+    	
+    	if (state == True): #움직임이 감지되면 녹화
+        	startTime = time.time()
+        	while True:
+            	nowTime = time.time()
+            	if (nowTime - startTime >= 10):
+                	record()
+                	break
+    	
+    	GPIO.output(GPIOOUT, state)
+    	time.sleep(0.5)
+    
+	GPIO.cleanup()
