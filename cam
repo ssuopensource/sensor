@@ -25,10 +25,12 @@ while True:
     state = GPIO.input(GPIOIN) #움직임이 감지되었는지 여부를 받아
     
     if (state == True): #움직임이 감지되면 녹화
-        print("Motion detected")
-        record()
-    else:
-        print("Motion not detected")
+        startTime = time.time()
+        while True:
+            nowTime = time.time()
+            if (nowTime - startTime >= 10):
+                record()
+                break
     
     GPIO.output(GPIOOUT, state)
     time.sleep(0.5)
